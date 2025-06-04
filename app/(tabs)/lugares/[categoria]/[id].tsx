@@ -74,6 +74,10 @@ export default function DetalleLugar() {
   );
 }
 
+export const options = {
+  href: null, // ⛔️ para que no aparezca en la barra de navegación
+};
+
 const styles = StyleSheet.create({
   container: {
     padding: 20,

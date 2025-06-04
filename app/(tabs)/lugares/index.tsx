@@ -7,6 +7,10 @@ const categorias = [
     { nombre: 'Montañas', id: 'montania' }
 ];
 
+export const options = {
+  href: null, // ⛔️ para que no aparezca en la barra de navegación
+};
+
 export default function CategoriasScreen() {
     const router = useRouter();
 
