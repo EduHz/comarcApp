@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { db } from '@/lib/firebaseConfig';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '@/firebase/firebaseConfig';
-import { useLocalSearchParams } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type Lugar = {
   nombre: string;
   descripcion: string;
   categoria: string;
+  id: string;
 };
 
 export default function CategoriaScreen() {
   const { categoria } = useLocalSearchParams();
+  const router = useRouter();
   const [lugares, setLugares] = useState<Lugar[]>([]);
 
   useEffect(() => {
@@ -24,7 +26,10 @@ export default function CategoriaScreen() {
           where('categoria', '==', categoria)
         );
         const snapshot = await getDocs(q);
-        const data = snapshot.docs.map(doc => doc.data() as Lugar);
+        const data = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Lugar[];
         setLugares(data);
       } catch (error) {
         console.error('Error al obtener lugares:', error);
@@ -34,22 +39,33 @@ export default function CategoriaScreen() {
     fetchLugares();
   }, [categoria]);
 
+  const irADetalle = (id: string) => {
+    router.push({
+      pathname: '/(tabs)/lugares/[categoria]/[id]',
+      params: { categoria: String(categoria), id },
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Lugares: {categoria}</Text>
       <FlatList
         data={lugares}
-        keyExtractor={(item, index) => `${item.nombre}-${index}`}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.card}>
+          <TouchableOpacity style={styles.card} onPress={() => irADetalle(item.id)}>
             <Text style={styles.cardTitle}>{item.nombre}</Text>
             <Text>{item.descripcion}</Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>
   );
 }
+
+export const options = {
+  href: null, // ⛔️ para que no aparezca en la barra de navegación
+};
 
 const styles = StyleSheet.create({
   container: {

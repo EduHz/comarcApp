@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { db } from '@/lib/firebaseConfig'; // ajustá el path según tu estructura
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '@/firebase/firebaseConfig'; // ajustá el path según tu estructura
+import { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 type Lugar = {
   nombre: string;
