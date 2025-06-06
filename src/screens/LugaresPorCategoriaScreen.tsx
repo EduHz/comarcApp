@@ -1,22 +1,40 @@
-
 // src/screens/LugaresPorCategoriaScreen.tsx
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { getDocs, collection, query, where } from 'firebase/firestore';
-import { db } from '../firebase/firebaseConfig';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { db } from '../../firebase/firebaseConfig';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { LugaresStackParamList, Lugar } from '../types/navigation';
+import { RouteProp } from '@react-navigation/native';
+
+type NavigationProp = NativeStackNavigationProp<LugaresStackParamList, 'LugaresPorCategoria'>;
+type RouteParams = RouteProp<LugaresStackParamList, 'LugaresPorCategoria'>;
 
 export default function LugaresPorCategoriaScreen() {
-  const [lugares, setLugares] = useState([]);
-  const route = useRoute();
-  const navigation = useNavigation();
+  const [lugares, setLugares] = useState<Lugar[]>([]);
+  const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<RouteParams>();
   const { categoria } = route.params;
 
   useEffect(() => {
     const fetchLugares = async () => {
-      const q = query(collection(db, 'lugares'), where('categoria', '==', categoria));
+      const cleanCategoria = categoria
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+
+      const q = query(
+        collection(db, 'lugares'),
+        where('categoria', '==', cleanCategoria)
+      );
+
       const snapshot = await getDocs(q);
-      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Lugar[];
+
       setLugares(data);
     };
 

@@ -1,17 +1,20 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, RouteProp } from '@react-navigation/native';
+import { Lugar, LugaresStackParamList } from '../types/navigation';
+
+type RouteParams = RouteProp<LugaresStackParamList, 'DetalleLugar'>;
 
 export default function DetalleLugarScreen() {
-  const route = useRoute();
+  const route = useRoute<RouteParams>();
   const { lugar } = route.params;
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{lugar.nombre}</Text>
       <Text>{lugar.descripcion}</Text>
-      <Text>Horario: {lugar.horarios}</Text>
-      <Text>Dirección: {lugar.direccion}</Text>
+      <Text>Horario: {lugar.horario} </Text>
+      <Text>Dirección: {lugar.ubicacion?.calle} </Text>
       {/* Aquí podrías agregar mapa, fotos, contacto, etc. */}
     </View>
   );

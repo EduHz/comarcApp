@@ -2,11 +2,16 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { LugaresStackParamList } from '../types/navigation';
 
-const categorias = ['Cafetería', 'Cervecería', 'Montaña', 'Feria', 'Arte'];
+const categorias = ['cafeteria', 'cerveceria', 'montaña', 'feria', 'arte'];
 
 export default function CategoriasScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<LugaresStackParamList, 'Categorias'>>();
+
+  const capitalizar = (str: string) =>
+    str.charAt(0).toUpperCase() + str.slice(1);
 
   return (
     <FlatList
@@ -18,7 +23,7 @@ export default function CategoriasScreen() {
           style={styles.card}
           onPress={() => navigation.navigate('LugaresPorCategoria', { categoria: item })}
         >
-          <Text style={styles.text}>{item}</Text>
+          <Text style={styles.text}>{capitalizar(item)}</Text>
         </TouchableOpacity>
       )}
     />
