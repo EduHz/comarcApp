@@ -1,21 +1,21 @@
 // src/navigation/AppNavigator.tsx
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from '../screens/HomeScreen';
-import CategoriaScreen from '../screens/CategoriaScreen';
-import DetalleScreen from '../screens/DetalleScreen';
+import TabNavigator from './TabNavigator';
+import FavoritosScreen from '../screens/FavoritosScreen';
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  Tabs: undefined;
+  Favoritos: undefined;
+};
 
-const AppNavigator = () => (
-  <NavigationContainer>
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Categoria" component={CategoriaScreen} />
-      <Stack.Screen name="Detalle" component={DetalleScreen} />
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+export default function AppNavigator() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Tabs" component={TabNavigator} />
+      <Stack.Screen name="Favoritos" component={FavoritosScreen} />
     </Stack.Navigator>
-  </NavigationContainer>
-);
-
-export default AppNavigator;
+  );
+}
