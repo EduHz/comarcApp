@@ -2,10 +2,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function HomeScreen() {
+export default function PerfilScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Pantalla de Inicio</Text>
+      <Text style={styles.text}>Pantalla de Perfil</Text>
     </View>
   );
 }

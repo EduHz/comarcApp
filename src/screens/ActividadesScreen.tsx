@@ -1,11 +1,11 @@
-// src/screens/HomeScreen.tsx
+// src/screens/ActividadesScreen.tsx
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function HomeScreen() {
+export default function ActividadesScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Pantalla de Inicio</Text>
+      <Text style={styles.text}>Pantalla de Actividades</Text>
     </View>
   );
 }
