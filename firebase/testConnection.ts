@@ -1,16 +1,34 @@
-// firebase/testConnection.js
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
-import app from './firebaseConfig';
+// src/firebase/testConnection.ts
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+import {
+  API_KEY,
+  AUTH_DOMAIN,
+  PROJECT_ID,
+  STORAGE_BUCKET,
+  MESSAGING_SENDER_ID,
+  APP_ID,
+} from '@env';
 
+const firebaseConfig = {
+  apiKey: API_KEY,
+  authDomain: AUTH_DOMAIN,
+  projectId: PROJECT_ID,
+  storageBucket: STORAGE_BUCKET,
+  messagingSenderId: MESSAGING_SENDER_ID,
+  appId: APP_ID,
+};
+
+// Inicializar app y firestore
+const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export const testFirebaseConnection = async () => {
+// Función de prueba
+export const testConnection = async () => {
   try {
-    const docRef = await addDoc(collection(db, 'test'), {
-      timestamp: new Date(),
-    });
-    console.log('Documento agregado con ID:', docRef.id);
-  } catch (e) {
-    console.error('Error al agregar documento:', e);
+    const snapshot = await getDocs(collection(db, 'lugares'));
+    console.log('✔ Conectado a Firebase. Documentos:', snapshot.docs.length);
+  } catch (error) {
+    console.error('❌ Error al conectar con Firebase:', error);
   }
 };
