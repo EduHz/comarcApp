@@ -1,7 +1,6 @@
 {
   "name": "comarcapp",
   "main": "node_modules/expo/AppEntry.js",
-
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
@@ -34,6 +33,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.2",
+    "react-native-dotenv": "^3.4.11",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
